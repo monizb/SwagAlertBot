@@ -17,7 +17,6 @@ const config = {
         "#giveawayalert retweet win",
         "rt for your chance to win",
         "retweet and you could win",
-        "#sweepstakes -gun",
         "#giveaway retweet",
         "Retweet and win",
         'retweet to win',
