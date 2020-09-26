@@ -12,6 +12,14 @@ const config = {
 
     // The searches the bot will do
     SEARCH_QUERIES: [
+        "#rttowin",
+        "win rt",
+        "#giveawayalert retweet win",
+        "rt for your chance to win",
+        "retweet and you could win",
+        "#sweepstakes -gun",
+        "#giveaway retweet",
+        "Retweet and win",
         'retweet to win',
         'RT to win',
         'retweet 2 win',
@@ -58,7 +66,7 @@ const config = {
     RATE_LIMIT_EXCEEDED_TIMEOUT: 1000 * 60 * 10,
 
     // 15 seconds timeout for Retweets
-    RETWEET_TIMEOUT: 1000 * 15,
+    RETWEET_TIMEOUT: 1000 * 10,
 
     // 30 seconds for Search Timeout
     RATE_SEARCH_TIMEOUT: 1000 * 30,

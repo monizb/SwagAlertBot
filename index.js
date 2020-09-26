@@ -175,8 +175,8 @@ class ContestJSBot {
                                 console.log('[Followed user]', searchItem.user.screen_name));
                         }
                         // Check if we should Reply
-                        if (text.indexOf('Comment') > -1 || text.indexOf('comment') > -1 || text.indexOf('reply') > -1 || text.indexOf('Reply') > -1 || text.indexOf('below') > -1) {
-                            API.replyToTweet("Thanks for the contest! :)").then(() =>
+                        if (text.indexOf('Comment') > -1 || text.indexOf('comment') > -1 || text.indexOf('reply') > -1 || text.indexOf('Reply') > -1 || text.indexOf('Tag') > -1 || text.indexOf('below') > -1) {
+                            API.replyToTweet("@gfv @AsdfHm @SDFGG").then(() =>
                                 console.log('[Replied to Tweet #]', searchItem.id));
                         }
 
