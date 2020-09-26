@@ -1,0 +1,15 @@
+{
+  "name": "twitter-contest-js-bot",
+  "version": "2.0.0",
+  "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
+  "description": "A Javascript bot that searches for tweets about contests and retweets them.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/raulrene/twitter-contest-js-bot.git"
+  },
+  "dependencies": {
+    "firebase": "^7.21.1",
+    "request-promise": "^0.4.3"
+  }
+}
