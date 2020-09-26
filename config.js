@@ -12,21 +12,12 @@ const config = {
 
     // The searches the bot will do
     SEARCH_QUERIES: [
-        "#rttowin",
-        "win rt",
-        "#giveawayalert retweet win",
-        "rt for your chance to win",
-        "retweet and you could win",
-        "#giveaway retweet",
-        "Retweet and win",
-        'retweet to win',
-        'RT to win',
-        'retweet 2 win',
-        'RT 2 win'
+        "\"free swag\" win",
+        "free \"swag\""
     ],
 
     // Appended at the end of search queries to filter out some data
-    SEARCH_QUERY_FILTERS: ' -vote -filter:retweets',
+    SEARCH_QUERY_FILTERS: '-filter:retweets',
 
     // Filter out tweets containing any phrases you want - just add them as strings in the array
     POST_SEARCH_FILTERS: [],
@@ -64,11 +55,15 @@ const config = {
     // 10 minutes timeout for limit exceeded
     RATE_LIMIT_EXCEEDED_TIMEOUT: 1000 * 60 * 10,
 
-    // 15 seconds timeout for Retweets
-    RETWEET_TIMEOUT: 1000 * 10,
+    // 5 minute timeout between sending messages
+    RETWEET_TIMEOUT: 1000 * 60 * 5,
+
+    SHORT_TIMER: 1000 * 15,
 
     // 30 seconds for Search Timeout
-    RATE_SEARCH_TIMEOUT: 1000 * 30,
+    RATE_SEARCH_TIMEOUT: 1000 * 60 * 10,
+
+    HOURLY_TIMEOUT: 1000 * 60 * 60,
 
     // Array of preferred accounts. If set, it only filters tweets from these accounts. Example: ['user1', 'user2']
     PREFERRED_ACCOUNTS: []

@@ -1,6 +1,7 @@
 const API = require('./api-functions');
 const config = require('./config');
 const firebase = require("firebase");
+const axios = require("axios");
 const bad = [];
 /** @class ContestJSBot */
 class ContestJSBot {
@@ -16,22 +17,17 @@ class ContestJSBot {
     /** Start the bot */
     start() {
         var comp = this;
-        firebase.database().ref("/stats/badids").once('value').then(function (snapshot) {
-            for (var key in snapshot.val()) {
-                comp.badTweetIds.push(snapshot.val()[key].id)
-            }
-            API.getBlockedUsers()
-                .then(blockedList => {
-                    comp.blockedUsers = Object.assign([], blockedList);
+        API.getBlockedUsers()
+            .then(blockedList => {
+                comp.blockedUsers = Object.assign([], blockedList);
 
-                    // Start searching (the Search is in itself a worker, as the callback continues to fetch data)
-                    comp.search();
+                // Start searching (the Search is in itself a worker, as the callback continues to fetch data)
+                comp.search();
 
-                    // Start the Retweet worker after short grace period for search results to come in
-                    setTimeout(() => comp.worker(), config.RETWEET_TIMEOUT);
-                })
-                .catch(err => console.error('Your credentials are not valid. Check the config.js file and ensure you supply the correct API keys.', err));
-        })
+                // Start the Retweet worker after short grace period for search results to come in
+                setTimeout(() => comp.worker(), config.SHORT_TIMER);
+            })
+            .catch(err => console.error('Your credentials are not valid. Check the config.js file and ensure you supply the correct API keys.', err));
         // Begin the program by fetching the blocked users list for the current user
     }
 
@@ -147,55 +143,42 @@ class ContestJSBot {
      * If it finds necessary it also likes (favorites) it and follows the user.
      */
     worker() {
-
+        var comp = this;
         // Check if we have elements in the Result Array
         if (this.searchResultsArr.length) {
             // Pop the first element (by doing a shift() operation)
             var searchItem = this.searchResultsArr[0];
             this.searchResultsArr.shift();
-
+            var today = new Date();
+            var dd = String(today.getDate() + 1).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var date = dd + mm + yyyy
             // Retweet
-            console.log('[Retweeting Tweet By]', searchItem.user.screen_name);
-            API.retweet(searchItem.id_str)
-                .then(() => {
-                    const text = searchItem.text.toLowerCase();
-                    firebase.database().ref("/stats/badids").push({ id: searchItem.id }).then(res => {
-                        bad.push(searchItem.id);
-                        this.badTweetIds.push(searchItem.id);
-                        this.last_tweet_id = this.badTweetIds[-1]
-                        // Check if we should Like (favorite) the Tweet
-                        if (text.indexOf('fav') > -1 || text.indexOf('like') > -1 || text.indexOf('Like') > -1) {
-                            API.like(searchItem.id_str).then(() =>
-                                console.log('[Liked tweet #]', searchItem.id));
-                        }
+            firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).set({ link: "https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str }).then(res => {
+                console.log("Saved Tweet " + ("https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str));
 
-                        // Check if we should Follow the user
-                        if (text.indexOf('follow') > -1 || text.indexOf('Follow') > -1) {
-                            API.follow(searchItem.user.id_str).then(() =>
-                                console.log('[Followed user]', searchItem.user.screen_name));
-                        }
-                        // Check if we should Reply
-                        if (text.indexOf('Comment') > -1 || text.indexOf('comment') > -1 || text.indexOf('reply') > -1 || text.indexOf('Reply') > -1 || text.indexOf('Tag') > -1 || text.indexOf('below') > -1) {
-                            API.replyToTweet("@gfv @AsdfHm @SDFGG").then(() =>
-                                console.log('[Replied to Tweet #]', searchItem.id));
-                        }
+                firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).once('value').then(function (snapshot) {
+                    var settings = {
+                        "chat_id": '-1001317978329',
+                        "text": "Beep Bop! 🤖 Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str
+                    }
+                    if (snapshot.val().status === undefined) {
+                        firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).update({ status: "Sent" }).then(res => {
+                            axios.post("https://api.telegram.org/bot1087328818:AAEUner3avOW95hv3i9Tb67n1hFp-i4J3hQ/sendMessage", settings).then(res => {
+                                console.log("Message Sent To Telegram, Now Sleeping For 5 Minutes");
+                                setTimeout(() => this.worker(), config.RETWEET_TIMEOUT);
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                        })
 
-                        // Then, re-queue the RT Worker
+                    } else {
+                        console.log("Message Already Exists, Now Sleeping For 5 Minutes");
                         setTimeout(() => this.worker(), config.RETWEET_TIMEOUT);
-                    })
+                    }
                 })
-                .catch(() => {
-                    console.error('[Error] RT Failed for', searchItem.id, '. Likely has already been retweeted. Adding to blacklist.');
-
-                    // If the RT fails, blacklist it
-                    this.badTweetIds.push(searchItem.id);
-                    firebase.database().ref("/stats/badids").push({ id: searchItem.id }).then(res => {
-                        bad.push(searchItem.id);
-                        // Then, re-start the RT Worker
-                        setTimeout(() => this.worker(), config.RETWEET_TIMEOUT);
-                    })
-
-                });
+            })
 
         }
 
@@ -210,8 +193,9 @@ class ContestJSBot {
             console.log('No more results. Will search and analyze again in ', config.RATE_SEARCH_TIMEOUT / 1000 + ' seconds.');
 
             // go fetch new results
-            this.search();
             setTimeout(() => this.worker(), config.RATE_SEARCH_TIMEOUT);
+            setTimeout(() => this.search(), config.RATE_SEARCH_TIMEOUT);
+
         }
     }
 }

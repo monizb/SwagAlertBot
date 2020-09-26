@@ -9,7 +9,11 @@
     "url": "git://github.com/raulrene/twitter-contest-js-bot.git"
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "firebase": "^7.21.1",
+    "jsdom": "^16.4.0",
+    "node-telegram-bot-api": "^0.50.0",
+    "nodemailer": "^6.4.11",
     "request-promise": "^0.4.3"
   }
 }

@@ -18,13 +18,13 @@ const API = {
      */
     search: (options) => {
         return new Promise((resolve, reject) => {
-            const {text, count = 100, result_type = 'popular', since_id = 0, max_id, geocode} = options;
+            const { text, count = 100, result_type = 'recent', since_id = 0, max_id, geocode } = options;
 
             let params =
-                    `?q=${encodeURIComponent(options.text)}` +
-                    `&count=${count}` +
-                    `&result_type=${result_type}` +
-                    `&since_id=${since_id}`;
+                `?q=${encodeURIComponent(options.text)}` +
+                `&count=${count}` +
+                `&result_type=${result_type}` +
+                `&since_id=${since_id}`;
 
             if (max_id) {
                 params += `&max_id=${max_id}`;
@@ -65,7 +65,7 @@ const API = {
                 }
             };
 
-            request.get({url: `${rootUrl}/search/tweets.json${stringParams}`, oauth})
+            request.get({ url: `${rootUrl}/search/tweets.json${stringParams}`, oauth })
                 .then(res => searchCallback(res))
                 .catch(err => reject(err));
         })
@@ -77,7 +77,7 @@ const API = {
      */
     retweet: (tweetId) =>
         new Promise((resolve, reject) =>
-            request.post({url: `${rootUrl}/statuses/retweet/${tweetId}.json`, oauth})
+            request.post({ url: `${rootUrl}/statuses/retweet/${tweetId}.json`, oauth })
                 .then((res) => resolve(res))
                 .catch((err) => reject(err))
         )
@@ -89,7 +89,7 @@ const API = {
      */
     like: (tweetId) =>
         new Promise((resolve, reject) =>
-            request.post({url: `${rootUrl}/favorites/create.json?id=${tweetId}`, oauth})
+            request.post({ url: `${rootUrl}/favorites/create.json?id=${tweetId}`, oauth })
                 .then((res) => resolve(res))
                 .catch((err) => reject(err))
         )
@@ -101,7 +101,7 @@ const API = {
      */
     follow: (userId) =>
         new Promise((resolve, reject) =>
-            request.post({url: `${rootUrl}/friendships/create.json?user_id=${userId}`, oauth})
+            request.post({ url: `${rootUrl}/friendships/create.json?user_id=${userId}`, oauth })
                 .then((res) => resolve(res))
                 .catch((err) => reject(err))
         )
@@ -113,7 +113,7 @@ const API = {
      */
     followByUsername: (userName) =>
         new Promise((resolve, reject) =>
-            request.post({url: `${rootUrl}/friendships/create.json?screen_name=${userName}`, oauth})
+            request.post({ url: `${rootUrl}/friendships/create.json?screen_name=${userName}`, oauth })
                 .then((res) => resolve(res))
                 .catch((err) => reject(err))
         )
@@ -125,7 +125,7 @@ const API = {
      */
     blockUser: (userId) =>
         new Promise((resolve, reject) =>
-            request.post({url: `${rootUrl}/blocks/create.json?user_id=${userId}`, oauth})
+            request.post({ url: `${rootUrl}/blocks/create.json?user_id=${userId}`, oauth })
                 .then((res) => resolve(res))
                 .catch((err) => reject(err))
         )
@@ -134,7 +134,7 @@ const API = {
     /** Get list of blocked users for the current user */
     getBlockedUsers: () =>
         new Promise((resolve, reject) =>
-            request.get({url: `${rootUrl}/blocks/list.json`, oauth})
+            request.get({ url: `${rootUrl}/blocks/list.json`, oauth })
                 .then((res) => resolve(JSON.parse(res).users.map((user) => user.id)))
                 .catch((err) => reject(err))
         )
@@ -147,7 +147,7 @@ const API = {
      */
     getTweetsForUser: (userId, count) =>
         new Promise((resolve, reject) =>
-            request.get({url: `${rootUrl}/statuses/user_timeline.json?user_id=${userId}&count=${count}`, oauth})
+            request.get({ url: `${rootUrl}/statuses/user_timeline.json?user_id=${userId}&count=${count}`, oauth })
                 .then((response) => resolve(response))
                 .catch((err) => reject(err))
         )
@@ -159,7 +159,7 @@ const API = {
      */
     deleteTweet: (tweetId) =>
         new Promise((resolve, reject) =>
-            request.post({url: `${rootUrl}/statuses/destroy/${tweetId}.json`, oauth})
+            request.post({ url: `${rootUrl}/statuses/destroy/${tweetId}.json`, oauth })
                 .then(() => {
                     console.log('Deleted tweet', tweetId);
                     resolve();
