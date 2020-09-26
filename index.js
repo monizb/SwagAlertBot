@@ -163,10 +163,11 @@ class ContestJSBot {
                         "chat_id": '-1001317978329',
                         "text": "Beep Bop! 🤖 Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str
                     }
-                    if (snapshot.val().status === undefined) {
-                        firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).update({ status: "Sent" }).then(res => {
-                            axios.post("https://api.telegram.org/bot1087328818:AAEUner3avOW95hv3i9Tb67n1hFp-i4J3hQ/sendMessage", settings).then(res => {
-                                console.log("Message Sent To Telegram, Now Sleeping For 5 Minutes");
+
+                    if (snapshot.val().status !== "Sent") {
+                        axios.post("https://api.telegram.org/bot1087328818:AAEUner3avOW95hv3i9Tb67n1hFp-i4J3hQ/sendMessage", settings).then(res => {
+                            firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).update({ status: "Sent" }).then(res => {
+                                console.log("Message Sent To Telegram, Now Sleeping For 4 Minutes");
                                 setTimeout(() => this.worker(), config.RETWEET_TIMEOUT);
                             }).catch(err => {
                                 console.log(err);

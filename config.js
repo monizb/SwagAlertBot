@@ -56,12 +56,12 @@ const config = {
     RATE_LIMIT_EXCEEDED_TIMEOUT: 1000 * 60 * 10,
 
     // 5 minute timeout between sending messages
-    RETWEET_TIMEOUT: 1000 * 60 * 5,
+    RETWEET_TIMEOUT: 1000 * 60 * 4,
 
     SHORT_TIMER: 1000 * 15,
 
     // 30 seconds for Search Timeout
-    RATE_SEARCH_TIMEOUT: 1000 * 60 * 10,
+    RATE_SEARCH_TIMEOUT: 1000 * 4,
 
     HOURLY_TIMEOUT: 1000 * 60 * 60,
 
