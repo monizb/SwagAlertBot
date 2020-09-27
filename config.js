@@ -12,15 +12,17 @@ const config = {
 
     // The searches the bot will do
     SEARCH_QUERIES: [
-        "\"free swag\" win",
-        "#ContestAlert OR #Contest AND -filter:replies",
-        "\"free swag\" contest",
+        "win free swag",
+        "#swag win",
+        "free swag",
         "\"win free swag\"",
-        "win free swag"
+        "#ContestAlert swag OR #Contest swag",
+        "\"free swag\" contest",
+
     ],
 
     // Appended at the end of search queries to filter out some data
-    SEARCH_QUERY_FILTERS: '-filter:retweets',
+    SEARCH_QUERY_FILTERS: '-filter:retweets -filter:replies',
 
     // Filter out tweets containing any phrases you want - just add them as strings in the array
     POST_SEARCH_FILTERS: [],

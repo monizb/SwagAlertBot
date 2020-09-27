@@ -18,7 +18,7 @@ const API = {
      */
     search: (options) => {
         return new Promise((resolve, reject) => {
-            const { text, count = 100, result_type = 'recent', since_id = 0, max_id, geocode } = options;
+            const { text, count = 50, result_type = 'recent', since_id = 0, max_id, geocode } = options;
 
             let params =
                 `?q=${encodeURIComponent(options.text)}` +
