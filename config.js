@@ -13,9 +13,10 @@ const config = {
     // The searches the bot will do
     SEARCH_QUERIES: [
         "\"free swag\" win",
-        "\"free swag\" constest",
+        "#ContestAlert OR #Contest AND -filter:replies",
+        "\"free swag\" contest",
         "\"win free swag\"",
-        "swag win"
+        "win free swag"
     ],
 
     // Appended at the end of search queries to filter out some data
@@ -63,7 +64,7 @@ const config = {
     SHORT_TIMER: 1000 * 15,
 
     // 30 seconds for Search Timeout
-    RATE_SEARCH_TIMEOUT: 1000 * 60 * 1,
+    RATE_SEARCH_TIMEOUT: 1000 * 60 * 2,
 
     HOURLY_TIMEOUT: 1000 * 60 * 60,
 

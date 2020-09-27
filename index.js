@@ -163,7 +163,7 @@ class ContestJSBot {
                         firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).once('value').then(function (snapshot) {
                             var settings = {
                                 "chat_id": '-1001317978329',
-                                "text": "Beep Bop! 🤖 Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str
+                                "text": ~~(Math.random() * 2) ? "Beep Bop! 🤖 Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str : "Its Swag Time! 🥳 🎉  Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str
                             }
 
                             if (snapshot.val().status === "Unsent") {
