@@ -13,7 +13,9 @@ const config = {
     // The searches the bot will do
     SEARCH_QUERIES: [
         "\"free swag\" win",
-        "free \"swag\""
+        "\"free swag\" constest",
+        "\"win free swag\"",
+        "swag win"
     ],
 
     // Appended at the end of search queries to filter out some data
