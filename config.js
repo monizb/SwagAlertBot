@@ -13,6 +13,7 @@ const config = {
     // The searches the bot will do
     SEARCH_QUERIES: [
         "win free swag",
+        "#raffle",
         "#swag win",
         "free swag",
         "\"win free swag\"",
