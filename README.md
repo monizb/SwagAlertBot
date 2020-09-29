@@ -86,7 +86,7 @@ $ node index.js
 ```
 
 This should immediately start the bot and start searching for tweets and sending them one by one to the specified group
-
+<br>
 ### Hosting  The Bot
 Running the bot on your local machine always is not ideal. So hosting your bot on a Free Heroku Account is the best option
 
