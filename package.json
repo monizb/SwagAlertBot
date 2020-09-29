@@ -1,18 +1,13 @@
 {
-  "name": "twitter-contest-js-bot",
-  "version": "2.0.0",
-  "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
-  "description": "A Javascript bot that searches for tweets about contests and retweets them.",
+  "name": "swagalertbot",
+  "version": "1.0.0",
+  "author": "Monish Basaniwal <monish2.basaniwal@gmail.com>",
+  "description": "A Bot that scans tweets to find the ones that potentially might be providing free stuff and then shares those tweets onto a Telegram Channel",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/raulrene/twitter-contest-js-bot.git"
-  },
   "dependencies": {
     "axios": "^0.20.0",
+    "dotenv": "^8.2.0",
     "firebase": "^7.21.1",
-    "jsdom": "^16.4.0",
-    "node-telegram-bot-api": "^0.50.0",
     "nodemailer": "^6.4.11",
     "request-promise": "^0.4.3"
   }

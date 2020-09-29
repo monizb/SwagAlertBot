@@ -1,0 +1,20 @@
+const keys = {
+    MAIL_ID: "",
+    MAIL_PASS: "",
+    MAIL_FROM: "",
+    MAIL_TO: "",
+    CONSUMER_KEY: "",
+    CONSUMER_SECRET: "",
+    ACCESS_TOKEN: "",
+    ACCESS_TOKEN_SECRET: "",
+    F_API: "",
+    F_AUTH_DOMAIN: "",
+    F_DB_URL: "",
+    F_P_ID: "",
+    F_SENDER_ID: "",
+    F_APP_ID: "",
+    BOT_ID: "",
+    CHAT_ID: ""
+}
+
+module.exports = keys;

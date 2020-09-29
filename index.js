@@ -1,34 +1,40 @@
-const API = require('./api-functions');
-const config = require('./config');
-const firebase = require("firebase");
-const axios = require("axios");
-const bad = [];
-/** @class ContestJSBot */
-class ContestJSBot {
+/* Getting Required Modules */
+const keys = require("./keys");
+const API = require('./api-functions'); //Getting Our API Functions
+const config = require('./config'); //GEtting Config Variables
+const firebase = require("firebase"); //The Database
+const axios = require("axios"); //Used to send messages to Telegram
+/////////////////////////////////////////////////////////
+
+const bad = []; //Another instance of our Trash Can :P
+/** @class SwagAlertBot */
+
+class SwagAlertBot {
 
     constructor() {
-        this.last_tweet_id = 0;
-        this.searchResultsArr = [];
-        this.blockedUsers = [];
-        this.badTweetIds = [];
-        this.limitLockout = false;
+        /* Setting Up Some Required Variables */
+        this.last_tweet_id = 0; // Used to search from this tweet id to next, Refer Twitter Docs
+        this.searchResultsArr = []; // Holds Our Search Results
+        this.blockedUsers = []; // Holds The List Of Blocked People From Our Account
+        this.badTweetIds = []; //Pushes used tweet IDs into this
+        this.limitLockout = false; // Signals if rate limit has been reached to make the bot sleep temporarily
+        /////////////////////////////////////////////////////////
     }
 
     /** Start the bot */
     start() {
         var comp = this;
-        API.getBlockedUsers()
+        API.getBlockedUsers() //Get my blocked users
             .then(blockedList => {
-                comp.blockedUsers = Object.assign([], blockedList);
+                comp.blockedUsers = Object.assign([], blockedList);//Assing the blocked people to the array above
 
                 // Start searching (the Search is in itself a worker, as the callback continues to fetch data)
                 comp.search();
 
-                // Start the Retweet worker after short grace period for search results to come in
+                // Start the Message Sender worker after short grace period for search results to come in
                 setTimeout(() => comp.worker(), config.SHORT_TIMER);
             })
             .catch(err => console.error('Your credentials are not valid. Check the config.js file and ensure you supply the correct API keys.', err));
-        // Begin the program by fetching the blocked users list for the current user
     }
 
     /** The Search function */
@@ -36,9 +42,10 @@ class ContestJSBot {
         // Don't search if limit lockout is in effect
         if (this.limitLockout) return;
 
-        const since_id = this.last_tweet_id;
-        const result_type = config.RESULT_TYPE;
-        const geocode = config.SEARCH_BY_GEOCODE;
+        const since_id = this.last_tweet_id; //Not really used
+        const result_type = config.RESULT_TYPE; // The result type we chose in the config file
+        const geocode = config.SEARCH_BY_GEOCODE; //If you want to search Within a specific location
+
         console.log('[Search] Searching for tweets...');
 
         let doSearch = (index) => {
@@ -50,7 +57,7 @@ class ContestJSBot {
                 text += ` from:${config.PREFERRED_ACCOUNTS.join(' OR from:')}`;
             }
 
-            API.search({ text, result_type, since_id, geocode })
+            API.search({ text, result_type, since_id, geocode }) //Search
                 .then(res => {
                     // Call the search callback to process the data
                     this.searchCallback(res);
@@ -58,7 +65,7 @@ class ContestJSBot {
                     if (config.SEARCH_QUERIES[index + 1]) {
                         // Sleep between searches so we do not trigger rate limit lockout
                         console.log(`[Search] Sleeping for ${config.RATE_SEARCH_TIMEOUT / 1000} seconds between searches so we don't trigger rate limit`);
-                        setTimeout(() => doSearch(++index), config.RATE_SEARCH_TIMEOUT);
+                        setTimeout(() => doSearch(++index), config.RATE_SEARCH_TIMEOUT); //Timeout the search
                     }
                 })
                 .catch(err => this.errorHandler(err));
@@ -76,11 +83,11 @@ class ContestJSBot {
         // Iterate through tweets returned by the Search
         tweets.forEach(tweet => {
 
-            // Lots of checks to filter out bad tweets, other bots and contests that are likely not legitimate :
+            // Lots of checks to filter out bad tweets, other bots and swag opportunities that are likely not legitimate :
             // If it's not already a retweet
             if (tweet.retweeted_status || tweet.quoted_status_id) return;
 
-            // It's not an ignored tweet
+            // It's not an ignored tweet from our trash can
             if (this.badTweetIds.indexOf(tweet.id) > -1) return;
 
             // Has enough retweets on the tweet for us to retweet it too (helps prove legitimacy)
@@ -149,41 +156,51 @@ class ContestJSBot {
             // Pop the first element (by doing a shift() operation)
             var searchItem = this.searchResultsArr[0];
             this.searchResultsArr.shift();
+            /* Get tomorrow's Date */
             var today = new Date();
             var dd = String(today.getDate() + 1).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             var yyyy = today.getFullYear();
             var date = dd + mm + yyyy
-            // Retweet
+            /////////////////////////////////////////////////////////
+
+            // First Check If This Message Has Already been sent to Telegram
             firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).once('value').then(function (snap) {
-                if (snap.val() === null) {
+                if (snap.val() === null) { //If Not
+                    //Save this link to the DB
                     firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).set({ link: "https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str, status: 'Unsent' }).then(res => {
                         console.log("Saved Tweet " + ("https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str));
-
+                        //Again checks if it has been previously sent to Telegram
                         firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).once('value').then(function (snapshot) {
                             var settings = {
-                                "chat_id": '-1001317978329',
+                                "chat_id": keys.CHAT_ID, //The Chat ID to be sent to
+
+                                //Choose Between The Two Texts Randomly
                                 "text": ~~(Math.random() * 2) ? "Beep Bop! 🤖 Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str : "Its Swag Time! 🥳 🎉  Found a potential swag related tweet here: https://twitter.com/" + searchItem.user.id_str + "/status/" + searchItem.id_str
                             }
 
                             if (snapshot.val().status === "Unsent") {
-                                axios.post("https://api.telegram.org/bot1087328818:AAEUner3avOW95hv3i9Tb67n1hFp-i4J3hQ/sendMessage", settings).then(res => {
+                                //Send The message to the Channel
+                                axios.post("https://api.telegram.org/" + keys.BOT_ID + "/sendMessage", settings).then(res => {
                                     firebase.database().ref("/swagbot/" + date + "/" + searchItem.id_str).update({ status: "Sent" }).then(res => {
+                                        //Add Tweet Id to trash can XD
                                         comp.badTweetIds.push(searchItem.id);
-                                        console.log("Message Sent To Telegram, Now Sleeping For 4 Minutes");
-                                        setTimeout(() => comp.worker(), config.RETWEET_TIMEOUT);
+                                        console.log("Message Sent To Telegram, Now Sleeping For" + config.MESSAGE_TIMEOUT / 1000 + "Seconds");
+                                        setTimeout(() => comp.worker(), config.MESSAGE_TIMEOUT);
                                     }).catch(err => {
                                         console.log(err);
                                     })
                                 })
 
                             } else {
+                                //Message Had Already Been Sent
                                 console.log("Message Already Exists, Now Sleeping For 5 Minutes");
                                 setTimeout(() => comp.worker(), config.RETWEET_TIMEOUT);
                             }
                         })
                     })
                 } else {
+                    //No Timeout Needed, Restart
                     comp.worker()
                 }
             })
@@ -209,7 +226,11 @@ class ContestJSBot {
 }
 
 // Start the bot
-new ContestJSBot().start();
+new SwagAlertBot().start();
+
+/* This whole part is only for local  development (No harm even when pushed to production though) Makes the program do something before it exits out
+when you use Ctrl+C */
+
 process.stdin.resume();//so the program will not close instantly
 
 function exitHandler(options, exitCode) {
@@ -230,3 +251,4 @@ process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
 
 //catches uncaught exceptions
 process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
+/////////////////////////////////////////////////////////

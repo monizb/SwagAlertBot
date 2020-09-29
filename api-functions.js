@@ -84,42 +84,6 @@ const API = {
     ,
 
     /**
-     * Like (aka favorite) a tweet
-     * @param tweetId {String} identifier for the tweet
-     */
-    like: (tweetId) =>
-        new Promise((resolve, reject) =>
-            request.post({ url: `${rootUrl}/favorites/create.json?id=${tweetId}`, oauth })
-                .then((res) => resolve(res))
-                .catch((err) => reject(err))
-        )
-    ,
-
-    /**
-     * Follow a user by username
-     * @param userId {String} identifier for the user
-     */
-    follow: (userId) =>
-        new Promise((resolve, reject) =>
-            request.post({ url: `${rootUrl}/friendships/create.json?user_id=${userId}`, oauth })
-                .then((res) => resolve(res))
-                .catch((err) => reject(err))
-        )
-    ,
-
-    /**
-     * Follow a user by username
-     * @param userName {String} username identifier for the user
-     */
-    followByUsername: (userName) =>
-        new Promise((resolve, reject) =>
-            request.post({ url: `${rootUrl}/friendships/create.json?screen_name=${userName}`, oauth })
-                .then((res) => resolve(res))
-                .catch((err) => reject(err))
-        )
-    ,
-
-    /**
      * Block a user
      * @param userId {String} ID of the user to block
      */
@@ -152,41 +116,6 @@ const API = {
                 .catch((err) => reject(err))
         )
     ,
-
-    /**
-     * Delete a tweet
-     * @param tweetId {String} identifier for the tweet
-     */
-    deleteTweet: (tweetId) =>
-        new Promise((resolve, reject) =>
-            request.post({ url: `${rootUrl}/statuses/destroy/${tweetId}.json`, oauth })
-                .then(() => {
-                    console.log('Deleted tweet', tweetId);
-                    resolve();
-                })
-                .catch((err) => reject(err))
-        )
-    ,
-
-    /**
-     * Reply to a tweet
-     * (The Reply on Twitter is basically a Status Update containing @username, where username is author of the original tweet)
-     * @param tweet {Object} The full Tweet we want to reply to
-     */
-    replyToTweet: (tweet) =>
-        new Promise((resolve, reject) => {
-            try {
-                const text = encodeURIComponent(`@${tweet.user.screen_name} `);
-                request.post({
-                    url: `${rootUrl}/statuses/update.json?status=${text}&in_reply_to_status_id=${tweet.id}`,
-                    oauth
-                })
-                    .then(() => resolve())
-                    .catch(err => reject(err))
-            } catch (err) {
-                reject(err);
-            }
-        })
 
 };
 
