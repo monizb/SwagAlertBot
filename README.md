@@ -4,6 +4,10 @@
  <br>
  <br>
  
+ ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
+ ![License](https://img.shields.io/github/license/monizb/SwagAlertBot)
+ ![Issues](https://img.shields.io/github/issues/monizb/SwagAlertBot)
+ 
  # Swag Alert Bot
  A Twitter Bot that scans Tweets for potential free swag offers and sends the Tweet right to your Telegram Inbox! It also sends an email every morning at a specified time, aggregating the previous day's offers it found.
  
