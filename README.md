@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://firebasestorage.googleapis.com/v0/b/trello-87674.appspot.com/o/Blue%20and%20White%20Gaming%20Logo%20(2).png?alt=media&token=ee2951b0-f07c-47f1-9984-61a41a91de57" width="300"/>
+<img src="https://firebasestorage.googleapis.com/v0/b/trello-87674.appspot.com/o/Blue%20and%20White%20Gaming%20Logo%20(2).png?alt=media&token=ee2951b0-f07c-47f1-9984-61a41a91de57" width="150"/>
  </p>
  <br>
  <br>
