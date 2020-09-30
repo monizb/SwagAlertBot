@@ -3,14 +3,14 @@
  </p>
  <br>
  <br>
- 
+
  ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
  ![License](https://img.shields.io/github/license/monizb/SwagAlertBot)
  ![Issues](https://img.shields.io/github/issues/monizb/SwagAlertBot)
- 
+
  # Swag Alert Bot
  A Twitter Bot that scans Tweets for potential free swag offers and sends the Tweet right to your Telegram Inbox! It also sends an email every morning at a specified time, aggregating the previous day's offers it found.
- 
+
  ### Installation
  This project has the following requirements:
  - Node.JS
@@ -20,7 +20,7 @@
  - Firebase account with a Realtime DB created
  - Email account with app Password (Gmail preferably)
  - Heroku Account (To host the bot)
- 
+
 Start by creating a new app on your Twitter Developer Account and name it whatever you want after which it should provide you with these keys:
 
 ```
