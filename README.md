@@ -114,3 +114,4 @@ Any and every contribution is accepted. Anything you think will make the bot bet
  ### Disclaimer
  This Bot uses Twitter API V1.1 and is written for `educational purposes only` and lies withing the use scope of the API , using the bot to spam people, posting sexual content, or abusing the Twitter API will result in a `permanent ban` of your Twitter Account. This bot `DOES NOT` in any form manipulate the tweet data or engage with the tweets by retweeting,commenting,liking or favoriting them.
  Look at these rules by Twitter [here](https://help.twitter.com/en/rules-and-policies/platform-manipulation)
+### if you like it please give it a ⭐
