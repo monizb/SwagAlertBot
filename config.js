@@ -19,6 +19,8 @@ const config = {
     SEARCH_QUERIES: [
         "win free swag",
         "#swag win",
+        "#raffle swag",
+        "#raffle win swag",
         "free swag",
         "\"win free swag\"",
         "#ContestAlert swag OR #Contest swag",
