@@ -23,6 +23,10 @@ const config = {
         "\"win free swag\"",
         "#ContestAlert swag OR #Contest swag",
         "\"free swag\" contest",
+        "give away",
+        "#giveaway",
+        "gratis",
+        "#gratis",
 
     ],
     /////////////////////////////////////////////////////////
