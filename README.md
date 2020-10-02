@@ -67,6 +67,22 @@ Process to get the Chat ID:
 4) Next use any Browser or Postman and send a request to `https://api.telegram.org/bot<YourBOTToken>/getUpdates` You will then get a JSON response if your token is correct. The bot token should start with `bot<token>`
 5) In the JSON look for `chat` object, there you should find the `id` of the group you just sent the message to
 
+Process to set Firebase Database:
+1) Go to [Firebase Console](https://console.firebase.google.com/) and create a new project with whatever name you want
+2) On home page of your project, find the way to create apps and create a Web App
+3) Get all keys needed from Firebase Configuration and set on `keys.js`
+4) Next go to "Realtime Database" and create a database (locked mode)
+5) Now that you have a database created, go to "Rules" and set:
+
+```js
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+```
+
 After you have completed the `keys.js` file, open the `config.js` file which contains values with which you can tweak the working of your bot.
 
 These values are included within the `config.js` file:
