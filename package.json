@@ -5,7 +5,7 @@
   "description": "A Bot that scans tweets to find the ones that potentially might be providing free stuff and then shares those tweets onto a Telegram Channel",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.20.0",
+    "axios": "^1.6.4",
     "dotenv": "^8.2.0",
     "firebase": "^7.23.0",
     "nodemailer": "^6.4.11",
